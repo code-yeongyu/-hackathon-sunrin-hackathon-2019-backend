@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from custom_profile.models import Profile, Image
-from custom_profile.serializers import ProfileSerializer, ImageSerializer
+from custom_profile.models import Profile
+from custom_profile.serializers import ProfileSerializer
 from custom_profile.forms import SignUpForm
 
 
@@ -20,27 +20,14 @@ class ProfileOverall(APIView):  # 자신의 프로필 수정
             except:
                 Profile.objects.create(user=request.user)
                 profile = Profile.objects.get(user=request.user)
-            if profile.is_student:
-                return Response(
-                    {
-                        'is_student': True,
-                        'school': profile.work_at,
-                        'location': profile.location,
-                        'school_type': profile.school_type_students,
-                        'images_id': profile.images_id
-                    },
-                    status=status.HTTP_200_OK)
-            else:
-                return Response(
-                    {
-                        'is_student': False,
-                        'is_certified': profile.is_certified,
-                        'school': profile.work_at,
-                        'location': profile.location,
-                        'career': profile.career_teachers,
-                        'images_id': profile.images_id
-                    },
-                    status=status.HTTP_200_OK)
+            return Response(
+                {
+                    'is_student': True,
+                    'school': profile.work_at,
+                    'location': profile.location,
+                    'school_type': profile.school_type_students
+                },
+                status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     def patch(self, request):
@@ -68,8 +55,7 @@ class ProfileOverall(APIView):  # 자신의 프로필 수정
                             'is_student': True,
                             'school': profile.work_at,
                             'location': profile.location,
-                            'school_type': profile.school_type_students,
-                            'images_id': profile.images_id
+                            'school_type': profile.school_type_students
                         },
                         status=status.HTTP_200_OK)
             else:
@@ -88,8 +74,7 @@ class ProfileOverall(APIView):  # 자신의 프로필 수정
                             'is_certified': profile.is_certified,
                             'work_at': profile.work_at,
                             'location': profile.location,
-                            'career': profile.career_teachers,
-                            'images_id': profile.images_id
+                            'career': profile.career_teachers
                         },
                         status=status.HTTP_200_OK)
             return Response(
@@ -158,28 +143,3 @@ def sign_up(request):  # 회원가입
             Token.objects.create(user=user)
             return Response(status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
-@api_view(['POST'])
-def create_image(request):
-    if request.user.is_authenticated:
-        serializer = ImageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {
-                    "id": serializer.data['id']
-                }, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-    return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
-@api_view(['GET'])
-def image(request, pk):  # 이미지 반환
-    test_file = open(
-        settings.BASE_DIR + "/" + str(
-            get_object_or_404(Image, pk=pk).image.url), 'rb')
-    return HttpResponse(
-        content=test_file,
-        content_type="image/jpeg",
-        status=status.HTTP_200_OK)
