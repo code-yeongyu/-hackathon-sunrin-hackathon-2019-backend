@@ -10,13 +10,13 @@
 ## Install
 
 ```sh
-npm install
+git clone https://github.com/kim-yeon-gyu-exlock/sunrin-hackathon-2019-backend/edit/master/backend/README.md
 ```
 
 ## Usage
 
 ```sh
- python3 -m venv myvenv;source myvenv/bin/activate;pip3 install -r requirements.txt;python3 makemigrations;python3 migrate;python3 manage.py runserver
+python3 -m venv myvenv;source myvenv/bin/activate;pip3 install -r requirements.txt;python3 makemigrations;python3 migrate;python3 manage.py runserver
 ```
 
 ## Author
