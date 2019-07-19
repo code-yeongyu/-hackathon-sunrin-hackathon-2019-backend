@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to hanul 👋</h1>
 <p>
-  <a href="https://github.com/kim-yeon-gyu-exlock/sunrin-hackathon-2019-backend/blob/master/backend/api_urls.md">
+  <a href="https://github.com/kim-yeon-gyu-exlock/sunrin-hackathon-2019-backend/blob/master/api_urls.md">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
   </a>
 </p>
