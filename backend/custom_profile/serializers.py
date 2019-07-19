@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django_apps.custom_profile.models import Profile
+from custom_profile.models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):

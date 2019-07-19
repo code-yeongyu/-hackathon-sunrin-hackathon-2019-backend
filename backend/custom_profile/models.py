@@ -8,15 +8,15 @@ class Profile(models.Model):
     is_student = models.BooleanField(default=True)
     is_certified = models.BooleanField(default=True)
     work_at = models.CharField(max_length=30,
-                               allow_blank=False,
-                               allow_null=False)
-    location = models.TextField(allow_blank=False,
-                                allow_null=False)
+                               blank=False,
+                               null=True)
+    location = models.TextField(blank=False,
+                                null=True)
     school_type_students = models.CharField(max_length=20,
-                                            allow_blank=False,
-                                            allow_null=True)
+                                            blank=False,
+                                            null=True)
     # for students
     career_teachers = models.CharField(max_length=20,
-                                       allow_blank=False,
-                                       allow_null=True)
+                                       blank=False,
+                                       null=True)
     # for teachers
