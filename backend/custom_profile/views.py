@@ -22,10 +22,7 @@ class ProfileOverall(APIView):  # 자신의 프로필 수정
                 profile = Profile.objects.get(user=request.user)
             return Response(
                 {
-                    'is_student': True,
-                    'school': profile.work_at,
-                    'location': profile.location,
-                    'school_type': profile.school_type_students
+                    'is_high': Profile.is_high
                 },
                 status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
@@ -37,91 +34,16 @@ class ProfileOverall(APIView):  # 자신의 프로필 수정
             except:
                 Profile.objects.create(user=request.user)
                 profile = Profile.objects.get(user=request.user)
-            payload = {}
-            if not request.data.get('location') == None:
-                payload['location'] = request.data.get('location')
-            if profile.is_student:
-                if not request.data.get('school') == None:
-                    payload['work_at'] = request.data.get('school')
-                if not request.data.get('school_type') == None:
-                    payload['school_type_students'] = request.data.get(
-                        'school_type')
-
-                serializer = ProfileSerializer(profile, data=payload)
+                serializer = ProfileSerializer(profile, data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(
                         {
-                            'is_student': True,
-                            'school': profile.work_at,
-                            'location': profile.location,
-                            'school_type': profile.school_type_students
-                        },
-                        status=status.HTTP_200_OK)
-            else:
-                payload = {}
-                if not request.data.get('work_at') == None:
-                    payload['work_at'] = request.data.get('work_at')
-                if not request.data.get('career_teachers') == None:
-                    payload['career_teachers'] = request.data.get(
-                        'career_teachers')
-                serializer = ProfileSerializer(profile, data=payload)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(
-                        {
-                            'is_student': False,
-                            'is_certified': profile.is_certified,
-                            'work_at': profile.work_at,
-                            'location': profile.location,
-                            'career': profile.career_teachers
+                            'is_high': Profile.is_high
                         },
                         status=status.HTTP_200_OK)
             return Response(
                 serializer.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
-class ProfileDetail(APIView):
-    def get(self, request, string):  # 프로필 조회
-        if request.user.is_authenticated:
-            try:
-                user = User.objects.get(username=string)
-            except:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-            try:
-                profile = Profile.objects.get(user=user)
-            except:
-                Profile.objects.create(user=user)
-                profile = Profile.objects.get(user=user)
-
-            try:
-                requests_profile = Profile.objects.get(user=request.user)
-            except:
-                Profile.objects.create(user=request.user)
-                requests_profile = Profile.objects.get(user=request.user)
-
-            if requests_profile.is_student and not profile.is_student:
-                return Response(
-                    {
-                        'is_student': False,
-                        'is_certified': profile.is_certified,
-                        'school': profile.work_at,
-                        'location': profile.location,
-                        'career': profile.career_teachers,
-                    },
-                )
-            elif (not requests_profile.is_student) and profile.is_student:
-                return Response(
-                    {
-                        'is_student': True,
-                        'school': profile.work_at,
-                        'location': profile.location,
-                        'school_type': profile.school_type_students,
-                    },
-                    status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_403_FORBIDDEN)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
