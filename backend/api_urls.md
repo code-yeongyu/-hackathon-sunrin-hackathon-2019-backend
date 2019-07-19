@@ -19,7 +19,7 @@
     ```json
     {
       "is_student": false,
-      "is_certified": True,
+      "is_certified": true,
       "work_at": "선린인터넷고등학교",
       "location": "서울시 용산구",
       "career": "한양대학교 국어교육과",
