@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'pilkit',
     # installed apps
     'rest_framework',
-    # new apps
+    # user apps
     'custom_profile',
-
+    'community',
 ]
 
 MIDDLEWARE = [

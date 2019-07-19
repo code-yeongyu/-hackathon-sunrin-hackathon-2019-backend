@@ -6,7 +6,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.authtoken import views
 
 urlpatterns = [
-    url(r'^profiles/', include('custom_profile.urls'))
+    url(r'^profiles/', include('custom_profile.urls')),
+    url(r'^posts/', include('community.urls'))
 ]
 
 
